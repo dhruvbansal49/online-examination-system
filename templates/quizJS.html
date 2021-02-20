@@ -1,0 +1,335 @@
+{% extends "layout.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+  {{ super() }}
+  <style type="text/css">
+    .important { color: #336699; }
+   
+  </style>
+
+{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+
+<script type="text/javascript">
+ if (window.performance) {
+  console.info("window.performance works fine on this browser");
+}
+console.info(performance.navigation.type);
+if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+  alert( "Your Information Will be lost if you reload the page" );
+} else {
+  console.info( "This page is not reloaded");
+}
+</script> 
+
+
+<script>
+var total_seconds = {{duration_exam}}*60;
+var c_minutes = parseInt(total_seconds / 60);
+var c_seconds = parseInt(total_seconds % 60);
+var timer; 
+function formSubmit(event){
+  if(event){
+    event.preventDefault();
+  }
+  if(confirm('Are you sure you want to submit the test?')){
+  console.log("submit form");
+  form = document.getElementById("formQuiz");
+  var ans = {};
+  for(let i=0;i<form.length;i++){
+    if(form[i].checked){
+      ans[form[i].name] = form[i].value
+    }
+  }
+  body = {
+    user_id: '{{user_id}}',
+    ans: ans
+  }
+  clearTimeout(timer);
+
+  var questions = document.getElementById("question").innerHTML = '';
+  question.innerHTML = `<a id="new">Submitting....<i class="fa fa-spinner fa-spin fa-3x"></i></a>`;
+  fetch('/submit-test', {
+    method: 'POST',
+    body: JSON.stringify(body),
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8'
+    }
+  })
+  .then(function (response) {
+      return response.json();
+  }).then(function (res) {
+      var questions = document.getElementById("question").innerHTML = '';
+      question.innerHTML = `<a id="new">${res['message']}<i class="fa fa-check fa-3x"></i></a>`
+  });
+  console.log(body)
+}
+}
+function CheckTime() {
+  document.getElementById("quiz-time-left").innerHTML = 'Time Left: ' + c_minutes + ' minutes ' + c_seconds + ' seconds ';
+
+  if (total_seconds <= 0) {
+   alert('you are out of time')
+   formSubmit(event);
+  } else {
+    total_seconds = total_seconds - 1;
+    c_minutes = parseInt(total_seconds / 60);
+    c_seconds = parseInt(total_seconds % 60);
+    timer = setTimeout(CheckTime, 1000);
+  }
+}
+timer = setTimeout(CheckTime, 1000);
+</script>
+<style>
+#quiz-time-left
+{
+  background-color:#696969;
+}
+h2,li{
+  color:#191919;
+  -webkit-user-select: none;
+        -webkit-touch-callout: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+}
+
+.sender,.message
+{
+  color:white;
+}
+.chatbubble
+{
+  background-color:#696969;
+}
+#new_button
+{
+  color:white;
+  background-color:#686868;
+
+  display: block;
+    width: 95px;
+    height: 40px;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    line-height: 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+
+}
+#new
+{
+  color:white;
+  background-color:#686868;
+  float:center;
+  display: block;
+    width: 215px;
+    height: 70px;
+    margin-left: 250px;
+    padding-top:10px;
+    margin-top: 210px;
+    text-align: center;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    line-height: 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+}
+#next
+{
+  color:white;
+  background-color:#686868;
+  float:right;
+  display: block;
+    width: 115px;
+    height: 40px;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    line-height: 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+}
+#previous
+{
+    color:white;
+  background-color:#686868;
+  float:left;
+  display: block;
+    width: 115px;
+    height: 40px;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    line-height: 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+}
+</style>
+
+  <body  >
+
+<div class="quiz-body" style="text-align:left;">
+  <form class="" method="post" id="formQuiz">
+    <div class="" id="question">
+      <div class="m-auto w-100">
+        <div class="m-auto">
+          <i class="fa fa-spinner fa-spin fa-3x"></i>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+        <div class="chatbubble">
+            <div class="unexpanded" style="background-color:#696969;">
+                <div class="title">Chat with Support</div>
+            </div>
+            <div class="expanded chat-window">
+              <div class="login-screen container">
+                <form id="loginScreenForm">
+                  <div class="form-group">
+                    <input type="text" style="width:300px;" class="form-control" id="fullname" placeholder="Name*" value="{{stu_name}}">
+                  </div>
+                  <div class="form-group">
+                    <input type="email" style="width:300px;"  class="form-control" id="email" placeholder="Email Address*" value="{{student_email}}">
+                  </div>
+                  <button type="submit" style="width:300px;"  id="new_button">Start Chat</button>
+                </form>
+              </div>
+              <div class="chats">
+                <div class="loader-wrapper">
+                  <div class="loader">
+                    <span>{</span><span>}</span>
+                  </div>
+                </div>
+                <ul class="messages clearfix">
+                </ul>
+                <div class="input">
+                  <form class="form-inline" id="messageSupport">
+                    <div class="form-group">
+                      <input type="text" autocomplete="off" class="form-control" id="newMessage" placeholder="Enter Message">
+                    </div>
+                    <button type="submit" id="new_button">Send</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+        </div>    
+
+        <script src="https://js.pusher.com/4.0/pusher.min.js"></script>
+        <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/popper.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/axios.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+
+
+    <script src="./static/app.js"></script>
+    <script src="./static/timer.js"></script>
+    </body>
+      <style media="screen">
+        .hid {display:none;}
+      </style>
+      <script type="text/javascript">
+
+        
+        function createQuiz(arr){
+          for(let i=0;i<arr.length;i++){
+            var div = document.createElement('div');
+            var h2 = document.createElement('h2');
+            var ul = document.createElement('ul');
+            var li1 = document.createElement('li');
+            var li2 = document.createElement('li');
+            var li3 = document.createElement('li');
+            var li4 = document.createElement('li');
+            var nextBtn = document.createElement('a');
+            var prevBtn = document.createElement('a');
+            if(i!=0){
+              div.setAttribute('class','hid questionRendered');
+            }
+            div.setAttribute('id',i);
+            h2.innerText = arr[i]['question'];
+            li1.setAttribute('class', 'option');
+            li1.innerHTML = `<input type="radio" id="a${i}a" name="${arr[i]['question_id']}" value="${arr[i]['option_a']}"> <label for="female">&nbsp;${arr[i]['option_a']}</label>`
+            li2.setAttribute('class', 'option');
+            li2.innerHTML = `<input type="radio" id="b${i}b" name="${arr[i]['question_id']}" value="${arr[i]['option_b']}"> <label for="female">&nbsp;${arr[i]['option_b']}</label>`
+            li3.setAttribute('class', 'option');
+            li3.innerHTML = `<input type="radio" id="c${i}c" name="${arr[i]['question_id']}" value="${arr[i]['option_c']}"> <label for="female">&nbsp;${arr[i]['option_c']}</label>`
+            li4.setAttribute('class', 'option');
+            li4.innerHTML = `<input type="radio" id="d${i}d" name="${arr[i]['question_id']}" value="${arr[i]['option_d']}"> <label for="female">&nbsp;${arr[i]['option_d']}</label>`
+            ul.setAttribute('class', 'option-group');
+            nextBtn.setAttribute('onclick', `nextOne(${i})`);
+           nextBtn.setAttribute('id', 'next');
+            nextBtn.innerHTML = `Next`
+            prevBtn.innerHTML = `Previous`
+            prevBtn.setAttribute('onclick', `prevOne(${i})`);
+            prevBtn.setAttribute('id', 'previous');
+            ul.appendChild(li1);
+            ul.appendChild(li2);
+            ul.appendChild(li3);
+            ul.appendChild(li4);
+            div.appendChild(h2);
+            div.appendChild(ul);
+            if(i!=0){
+              div.appendChild(prevBtn);
+            }
+            if(i!=arr.length-1){
+              div.appendChild(nextBtn);
+            }
+            if(i==arr.length-1){
+              var submitBtn = document.createElement('button');
+              submitBtn.setAttribute('id', 'next');
+              submitBtn.setAttribute('type', 'submit');
+              submitBtn.setAttribute('onclick', 'formSubmit(event)');
+              submitBtn.innerText = 'Submit';
+              div.appendChild(submitBtn);
+            }
+            var questions = document.getElementById("question");
+            questions.appendChild(div);
+          }
+        }
+
+        function nextOne(id){
+          document.getElementById(id).classList.add('hid');
+          document.getElementById(id+1).classList.remove('hid');
+        }
+        function prevOne(id){
+          document.getElementById(id).classList.add('hid');
+          document.getElementById(id-1).classList.remove('hid');
+        }
+
+        fetch('/question-list', {
+          method: 'POST',
+          body: JSON.stringify({'user_id':'{{user_id}}'}),
+          headers: {
+            'Content-type': 'application/json; charset=UTF-8'
+          }
+        })
+        .then(function (response) {
+            return response.json();
+        }).then(function (questionArray) {
+            var questions = document.getElementById("question").innerHTML = '';
+            createQuiz(questionArray);
+        });
+      </script>
+  {% endblock %}
