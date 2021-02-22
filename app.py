@@ -3,7 +3,6 @@ from forms import RegistrationForm, LoginForm, ChangePasswordForm, RequestResetF
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import UserMixin
-from countdown import countdown
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask_login import login_user, current_user, logout_user, login_required
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
