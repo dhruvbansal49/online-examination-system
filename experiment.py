@@ -17,11 +17,11 @@ import json
 from flask_cors import CORS
 from pusher import pusher
 import simplejson
-import cv2
+
 
 
 app = Flask(__name__)
-camera = cv2.VideoCapture(0)
+
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 app.config['SQLALCHEMY_DATABASE_URI'] ='postgres://kmehjunwelbxem:3a5bd15721c4b183a610f35e1228e8c3cfb1173010a07d43f7d215dde7f03b20@ec2-3-210-23-22.compute-1.amazonaws.com:5432/d33g4onqiumn8h'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -89,6 +89,7 @@ class CollegeExam( db.Model,UserMixin):
     date = db.Column(db.Text())
     starting_time = db.Column(db.Text())
     ending_time = db.Column(db.Text())
+    is_calc = db.Column(db.Text())
     doc = db.Column(db.Text())
     slug = db.Column(db.Text())
     college_id_id = db.Column(db.Integer)
@@ -162,7 +163,7 @@ def signin():
         registeredUser = UserInformation.query.filter_by(student_email=email,student_password=password).first()
         ProctorUser = ProctorInfo.query.filter_by(proctor_email=email,proctor_password=password).first()
         
-        
+
         try:
       #student a particular proctor is assigned
             college_details = CollegeInfo.query.filter_by(college_id=ProctorUser.college_id_id).first()
@@ -197,12 +198,12 @@ def signin():
             signin.college_id=registeredUser.college_id_id
             signin.semester_id_id=registeredUser.semester_id_id
             signin.branch_id_id=registeredUser.branch_id_id
-            exam_details = CollegeExam.query.filter_by(college_id_id=signin.college_id,semester_id_id=signin.semester_id_id,branch_id_id=signin.branch_id_id).first()
-            AnswerUser = AnswerInfo.query.filter_by(student_id_id=signin.student_id,exam_id_id=exam_details.exam_id).first()
-            # print("ye hai exam")
+            signin.exam_details = CollegeExam.query.filter_by(college_id_id=signin.college_id,semester_id_id=signin.semester_id_id,branch_id_id=signin.branch_id_id).first()
+            AnswerUser = AnswerInfo.query.filter_by(student_id_id=signin.student_id,exam_id_id=signin.exam_details.exam_id).first()
+            
         except:
             print("something went wrong")
-        if registeredUser is not None and AnswerUser is None :
+        if registeredUser is not None and AnswerUser is  None  :
             from datetime import date
             today = date.today()   
             print('Logged in..')
@@ -212,10 +213,14 @@ def signin():
             college_details = CollegeInfo.query.filter_by(college_id=signin.college_id).first()
             exam_details = CollegeExam.query.filter_by(college_id_id=signin.college_id,semester_id_id=signin.semester_id_id,branch_id_id=signin.branch_id_id,date=today).first()
             exam_details = CollegeExam.query.filter_by(college_id_id=signin.college_id,semester_id_id=signin.semester_id_id,branch_id_id=signin.branch_id_id,date=today).first()
-            print("exam time",college_details.college_university)
+           
+        
         
             try:
+                signin.college=college_details.college_university
                 signin.duration_exam=exam_details.duration
+                signin.calculator=exam_details.is_calc
+                print("Calculator",signin.calculator)
                 from datetime import datetime
                 now = datetime.now()
                 now=now.strftime("%H:%M")
@@ -253,13 +258,15 @@ def signin():
 # encoded_text = cipher_suite.encrypt(b"test")
 # encoded_text=encoded_text[3:20]
 
-@app.route('/calculator',methods=["GET","POST"])
-def calc():
-    return render_template("calculator.html")
+
  
 @app.route('/test',methods=["GET","POST"])
 def test():
-    return render_template('quizJS.html', user_id=signin.student_id, stu_name=signin.name,duration_exam=signin.duration_exam,student_email=signin.email)
+    AnswerUser = AnswerInfo.query.filter_by(student_id_id=signin.student_id,exam_id_id=signin.exam_details.exam_id).first()
+    if AnswerUser is None:
+        return render_template('quizJS.html', user_id=signin.student_id, stu_name=signin.name,duration_exam=signin.duration_exam,student_email=signin.email,calc=signin.calculator,college=signin.college)
+    else:
+        return render_template('login.html')
 
 @app.route('/new/guest', methods=['POST'])
 def guestUser():

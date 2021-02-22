@@ -23,6 +23,7 @@ if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
 } else {
   console.info( "This page is not reloaded");
 }
+
 </script> 
 
 
@@ -201,7 +202,7 @@ h2,li{
 </div>
         <div class="chatbubble">
             <div class="unexpanded" style="background-color:#696969;">
-                <div class="title">Chat with Support</div>
+                <div class="title">Chat Support</div>
             </div>
             <div class="expanded chat-window">
               <div class="login-screen container">
@@ -295,6 +296,7 @@ h2,li{
             }
             if(i!=arr.length-1){
               div.appendChild(nextBtn);
+              
             }
             if(i==arr.length-1){
               var submitBtn = document.createElement('button');
@@ -310,6 +312,7 @@ h2,li{
         }
 
         function nextOne(id){
+          
           document.getElementById(id).classList.add('hid');
           document.getElementById(id+1).classList.remove('hid');
         }
@@ -332,4 +335,7 @@ h2,li{
             createQuiz(questionArray);
         });
       </script>
+       <div style="color:#696969;margin-top:20px;background-color: #f3f4f6;">
+                            <p>Copyright &copy; 2021, All Right Reserved <a style="color:#696969;margin-top:10px;" href="https://engagenreap.com/">EnR Consultancy</a></p>
+                        </div>
   {% endblock %}

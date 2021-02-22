@@ -188,18 +188,15 @@
 									</ul>
 								  </div>
 							</div>
-							<div class="checkbox-circle mt-24">
+							
 								<label>
-									<input type="checkbox" checked>  Please accept <a href="#">terms and conditions ?</a>
+									<input type="checkbox" onClick="return readOnlyCheckBox()" checked>  Please accept <a href="#">terms and conditions ?</a>
 									<span class="checkmark"></span>
 								</label>
-
-								
-							</div>
+				
+							
 							<br><br><br><br>
 							 </form>
-
-
 								<div class="form-holder" style="align-self: flex-end; transform: translateY(4px);">
 									<div class="checkbox-tick">
 									
@@ -246,6 +243,11 @@
 
            
 		</div>
+		<SCRIPT>
+function readOnlyCheckBox() {
+   return false;
+}
+</SCRIPT>
 
 		<!-- JQUERY -->
 		<script src="../static/js/jquery-3.3.1.min.js"></script>

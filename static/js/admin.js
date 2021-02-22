@@ -64,7 +64,7 @@
                 $('#chat-msgs').prepend(
                     `<tr>
                         <td>
-                            <div class="sender">${message.sender} @ <span class="date">${message.createdAt}</span></div>
+                            <div class="sender" style="text-align:right;font-size:12px;"><strong>~ ${message.sender} @ <span class="date">${message.createdAt}</span></strong></div>
                             <div class="message">${message.text}</div>
                         </td>
                     </tr>`
@@ -88,7 +88,7 @@
 
             if (chat.currentRoom !== undefined) {
                 $('.response').show()
-                $('#room-title').text(evt.target.dataset.roomId)
+                $('#room-title').text("Connected to "+evt.target.dataset.roomId)
             }
 
             evt.preventDefault()
@@ -114,8 +114,9 @@
             });
 
             helpers.displayChatMessage({
+                
                 'email': chat.currentRoom,
-                'sender': 'Support',
+                'sender': 'tea_name',
                 'text': message, 
                 'createdAt': createdAt
             })
@@ -144,7 +145,7 @@
             {
         
                 $('#rooms').append(
-                    `<li class="nav-item"><a data-room-id="${user.email}" data-channel-id="${index}" class="nav-link" href="#">${user.name}</a></li>`
+                    `<li class="nav-item"><a style="background-color: #f44336; color: white;padding:7px 7px; text-align: center;text-decoration: none; margin-bottom:4px;display:inline-block"  data-room-id="${user.email}" data-channel-id="${index}" class="nav-link" href="#">${user.name}</a></li>`
                 )
             }
             else{
