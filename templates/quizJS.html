@@ -97,6 +97,10 @@ h2,li{
         -ms-user-select: none;
         user-select: none;
 }
+h4
+{
+  color:black;
+}
 
 .sender,.message
 {
@@ -256,7 +260,8 @@ h2,li{
         
         function createQuiz(arr){
           for(let i=0;i<arr.length;i++){
-            var div = document.createElement('div');
+          var div = document.createElement('div');
+            var h4 = document.createElement('h4');
             var h2 = document.createElement('h2');
             var ul = document.createElement('ul');
             var li1 = document.createElement('li');
@@ -269,6 +274,7 @@ h2,li{
               div.setAttribute('class','hid questionRendered');
             }
             div.setAttribute('id',i);
+            h4.innerText = "Question No."+(i+1)+" of "+arr.length;
             h2.innerText = arr[i]['question'];
             li1.setAttribute('class', 'option');
             li1.innerHTML = `<input type="radio" id="a${i}a" name="${arr[i]['question_id']}" value="${arr[i]['option_a']}"> <label for="female">&nbsp;${arr[i]['option_a']}</label>`
@@ -289,6 +295,7 @@ h2,li{
             ul.appendChild(li2);
             ul.appendChild(li3);
             ul.appendChild(li4);
+            div.appendChild(h4);
             div.appendChild(h2);
             div.appendChild(ul);
             if(i!=0){
@@ -335,7 +342,5 @@ h2,li{
             createQuiz(questionArray);
         });
       </script>
-       <div style="color:#696969;margin-top:20px;background-color: #f3f4f6;">
-                            <p>Copyright &copy; 2021, All Right Reserved <a style="color:#696969;margin-top:10px;" href="https://engagenreap.com/">EnR Consultancy</a></p>
-                        </div>
+       
   {% endblock %}
