@@ -10,6 +10,9 @@
     
     <link rel="stylesheet" href="main.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    
+
+    
     <style>
       
 /* BASIC */
@@ -17,6 +20,39 @@ body {
   font-family: "Poppins", sans-serif;
   height: 80vh;
 }
+ .dropbtn {
+  
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  margin-right:123px;
+}
+
+.dropdown {
+  float:right;
+  display: inline-block;
+  margin-right:23px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  margin-right:223px;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  margin-top:30px;
+}
+
+
+
+.dropdown-content a:hover {background-color: #ddd;}
+
+.dropdown:hover .dropdown-content {display: block;
+margin-left:-65px;
+margin-top:53px;}
 
 h2 {
   text-align: center;
@@ -104,11 +140,11 @@ input[type=text]:placeholder {
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
           &nbsp; &nbsp;
           <span class="navbar-brand">
-            <img src="https://engagenreap.com/images/logo2.png" alt="" width="40" height="40" class="d-inline-block align-top"> &nbsp; &nbsp;
+            <img src="https://engagenreap.com/images/logo2.png" alt="" width="30" height="30" class="d-inline-block align-top"> &nbsp; &nbsp;
               EnR Exam System
           </span>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -117,14 +153,17 @@ input[type=text]:placeholder {
           <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link" href="#">
-                    FORGET PASSWORD
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">
-                    HELP
-                </a>
+               <div class="dropdown">
+<div   style="float:right;font-size:16px;margin-top:10px;margin-right:20px;color:white"><i class="fab fa-whatsapp"></i>&nbsp;&nbsp;Contact Us</div>
+  <div class="dropdown-content">
+  <p style="color:#696969;font-size:16px;"><b>for any technical queries,</b></p>
+  <p style="text-align:center;color:#696969;"><i class="far fa-envelope"></i>&nbsp;&nbsp;Email</p>
+  <p style="text-align:center;color:#696969;">info@engageandnreap.com</p>
+    <p style="text-align:center;color:#696969;"><i class="fas fa-blender-phone"></i>&nbsp;&nbsp;Call Us</p>
+  <p style="text-align:center;color:#696969;">9123452764</p>
+  <p style="text-align:center;color:#696969;">7847838373</p>
+  </div>
+</div>
               </li>
             </ul>
           </div>
